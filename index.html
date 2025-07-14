@@ -99,8 +99,52 @@
             left: 50%;
             transform: translateX(-50%);
             display: flex;
-            gap: 20px;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
             z-index: 1000;
+        }
+
+        .nav-controls {
+            display: flex;
+            gap: 20px;
+        }
+
+        .slide-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 8px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .slide-dot {
+            width: 40px;
+            height: 30px;
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .slide-dot:hover {
+            background: rgba(255,255,255,0.3);
+            border-color: rgba(255,255,255,0.5);
+            transform: translateY(-2px);
+        }
+
+        .slide-dot.active {
+            background: rgba(255,215,0,0.4);
+            border-color: rgba(255,215,0,0.6);
+            color: #000;
+            font-weight: bold;
         }
 
         .nav-btn {
@@ -689,8 +733,36 @@
     </div>
 
     <div class="navigation">
-        <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">← Previous</button>
-        <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">Next →</button>
+        <div class="nav-controls">
+            <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">← Previous</button>
+            <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">Next →</button>
+        </div>
+        <div class="slide-grid">
+            <div class="slide-dot active" onclick="goToSlide(0)" title="Welcome">1</div>
+            <div class="slide-dot" onclick="goToSlide(1)" title="Today's Journey">2</div>
+            <div class="slide-dot" onclick="goToSlide(2)" title="Icebreaker">3</div>
+            <div class="slide-dot" onclick="goToSlide(3)" title="What's Possible">4</div>
+            <div class="slide-dot" onclick="goToSlide(4)" title="Visual Arts">5</div>
+            <div class="slide-dot" onclick="goToSlide(5)" title="AI Music">6</div>
+            <div class="slide-dot" onclick="goToSlide(6)" title="Interactive">7</div>
+            <div class="slide-dot" onclick="goToSlide(7)" title="Break">8</div>
+            <div class="slide-dot" onclick="goToSlide(8)" title="AI + Culture">9</div>
+            <div class="slide-dot" onclick="goToSlide(9)" title="Hands-On">10</div>
+            <div class="slide-dot" onclick="goToSlide(10)" title="Workflow">11</div>
+            <div class="slide-dot" onclick="goToSlide(11)" title="Applications">12</div>
+            <div class="slide-dot" onclick="goToSlide(12)" title="3-Week Journey">13</div>
+            <div class="slide-dot" onclick="goToSlide(13)" title="Success Stories">14</div>
+            <div class="slide-dot" onclick="goToSlide(14)" title="Lunch">15</div>
+            <div class="slide-dot" onclick="goToSlide(15)" title="Ideation Lab">16</div>
+            <div class="slide-dot" onclick="goToSlide(16)" title="Requirements">17</div>
+            <div class="slide-dot" onclick="goToSlide(17)" title="Cultural Dive">18</div>
+            <div class="slide-dot" onclick="goToSlide(18)" title="Cultural Assets">19</div>
+            <div class="slide-dot" onclick="goToSlide(19)" title="Visioning">20</div>
+            <div class="slide-dot" onclick="goToSlide(20)" title="Storyboard">21</div>
+            <div class="slide-dot" onclick="goToSlide(21)" title="Peer Share">22</div>
+            <div class="slide-dot" onclick="goToSlide(22)" title="Tomorrow">23</div>
+            <div class="slide-dot" onclick="goToSlide(23)" title="Closing">24</div>
+        </div>
     </div>
 
     <script>
@@ -708,6 +780,11 @@
             slides.forEach(slide => slide.classList.remove('active'));
             slides[currentSlide].classList.add('active');
             
+            // Update slide dots
+            document.querySelectorAll('.slide-dot').forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentSlide);
+            });
+            
             document.getElementById('slideCounter').textContent = `${currentSlide + 1} / ${totalSlides}`;
             document.getElementById('timeIndicator').textContent = timeSchedule[currentSlide];
             
@@ -722,6 +799,13 @@
             const newSlide = currentSlide + direction;
             if (newSlide >= 0 && newSlide < totalSlides) {
                 currentSlide = newSlide;
+                updateSlide();
+            }
+        }
+
+        function goToSlide(slideIndex) {
+            if (slideIndex >= 0 && slideIndex < totalSlides) {
+                currentSlide = slideIndex;
                 updateSlide();
             }
         }
